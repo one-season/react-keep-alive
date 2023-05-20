@@ -9,11 +9,21 @@ import Home from "./views/home";
 import About from "./views/about";
 import Profile from "./views/profile";
 
+import { KeepAlive, KeepAliveTrans } from "./keep-alive";
+
+/**
+ * 使用高阶组件
+*/
+const AliveHome = KeepAliveTrans(Home, 'home');
+const AliveAbout = KeepAliveTrans(About, 'about');
+const AliveProfile = KeepAliveTrans(Profile, 'profile');
+// console.log(<AliveHome />, <AliveAbout/>, <AliveProfile></AliveProfile>);
+
 function App() {
   const navigate = useNavigate();
 
   return (
-    <div>
+    <KeepAlive>
       <h2 onClick={() => navigate('/')}>
         My App
       </h2>
@@ -34,11 +44,11 @@ function App() {
       </div>
 
       <Routes>
-        <Route path="/" element={ <Home /> } />
-        <Route path="/about" element={ <About /> } />
-        <Route path="/profile" element={ <Profile /> } />
+        <Route path="/" element={ <AliveHome /> } />
+        <Route path="/about" element={ <AliveAbout /> } />
+        <Route path="/profile" element={ <AliveProfile /> } />
       </Routes>
-    </div>
+    </KeepAlive>
   )
 }
 
