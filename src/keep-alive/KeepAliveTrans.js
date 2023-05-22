@@ -1,17 +1,17 @@
 import React, { useContext, useEffect, useRef } from 'react'
 
 import { KeepAContext } from "./KeepAContext";
+import * as actionTypes from "./store/constants";
 
 const KeepAliveTrans = (ReactElement, { keepAliveId, saveScroll }) => {
 
   function EnhanceComponent(props) {
     const _ref = useRef(null);
-    const { keepAliveStates, setKeepAStates, handleScroll } = useContext(KeepAContext);
+    const { keepAliveStates, setKeepAStates, handleScroll, dispatch } = useContext(KeepAContext);
 
     useEffect(() => {
       const state = keepAliveStates[keepAliveId];
-
-      if (state?.nodes) {
+      if (state?.nodes && state.status !== actionTypes.DESTROY) {
         state.nodes.forEach(node => _ref.current.appendChild(node));
 
         if (saveScroll) {
@@ -23,7 +23,7 @@ const KeepAliveTrans = (ReactElement, { keepAliveId, saveScroll }) => {
         }
       } else {
         setKeepAStates({
-          reactElement: <ReactElement { ...props } />,
+          reactElement: <ReactElement { ...props } dispatch={dispatch} />,
           keepAliveId
         })
       }

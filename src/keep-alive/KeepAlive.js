@@ -31,6 +31,19 @@ const KeepAlive = memo((props) => {
           keepAliveId
         }
       })
+    } else {
+      const state = keepAliveStates[keepAliveId];
+      if (state.status === actionTypes.DESTROY) {
+        state.nodes?.forEach(node => node.parentNode.removeChild(node));
+
+        dispatch({
+          type: actionTypes.CREATING,
+          payload: {
+            reactElement,
+            keepAliveId
+          }
+        })
+      }
     }
   }, [keepAliveStates]);
 
@@ -51,13 +64,14 @@ const KeepAlive = memo((props) => {
       value={{ 
         keepAliveStates,
         setKeepAStates,
-        handleScroll
+        handleScroll,
+        dispatch
       }}
     >
       { props.children }
       
       {
-        Object.values(keepAliveStates).map(({ keepAliveId, reactElement }) => {
+        Object.values(keepAliveStates).filter(state => state.status !== actionTypes.DESTROY).map(({ keepAliveId, reactElement }) => {
           return (
             /**
              * 这个div渲染完成后，就能拿到当前标签node和渲染的childNodes

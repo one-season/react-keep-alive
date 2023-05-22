@@ -28,6 +28,15 @@ function reducer(state, action) {
         }
       }
     }
+    case actionTypes.DESTROY: {
+      return {
+        ...state,
+        [keepAliveId]: {
+          ...state[keepAliveId],
+          status: actionTypes.DESTROY
+        }
+      }
+    }
     default: {
       return state;
     }
