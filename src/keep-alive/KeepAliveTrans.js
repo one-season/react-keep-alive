@@ -7,7 +7,7 @@ const KeepAliveTrans = (ReactElement, { keepAliveId, saveScroll }) => {
 
   function EnhanceComponent(props) {
     const _ref = useRef(null);
-    const { keepAliveStates, setKeepAStates, handleScroll, dispatch } = useContext(KeepAContext);
+    const { keepAliveStates, setKeepAStates, handleScroll } = useContext(KeepAContext);
 
     useEffect(() => {
       const state = keepAliveStates[keepAliveId];
@@ -23,7 +23,7 @@ const KeepAliveTrans = (ReactElement, { keepAliveId, saveScroll }) => {
         }
       } else {
         setKeepAStates({
-          reactElement: <ReactElement { ...props } dispatch={dispatch} />,
+          reactElement: <ReactElement { ...props } />,
           keepAliveId
         })
       }
