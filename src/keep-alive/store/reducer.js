@@ -12,7 +12,9 @@ function reducer(state, action) {
           keepAliveId,
           reactElement,
           status: type,
-          nodes: null
+          nodes: null,
+          //滚动的信息保存
+          scrolls: {}
         }
       }
     }

@@ -32,13 +32,26 @@ const KeepAlive = memo((props) => {
         }
       })
     }
+  }, [keepAliveStates]);
+
+  /**
+   * 提供给子组件处理滚动信息的方法
+   */
+  const handleScroll = useCallback((keepAliveId, event) => {
+    if (keepAliveStates[keepAliveId]) {
+      const { target } = event;
+      const scrolls = keepAliveStates[keepAliveId].scrolls;
+
+      scrolls[target] = target.scrollTop;
+    }
   }, [keepAliveStates])
   
   return (
     <KeepAContext.Provider 
       value={{ 
         keepAliveStates,
-        setKeepAStates
+        setKeepAStates,
+        handleScroll
       }}
     >
       { props.children }
@@ -51,7 +64,7 @@ const KeepAlive = memo((props) => {
              * 然后去更新nodes，接着在KATrans组件里渲染nodes；
              */
             <div
-              className='get_nodes' 
+              className={`get_${keepAliveId}_nodes`} 
               ref={node => {
                 if (node && !keepAliveStates[keepAliveId].nodes) {
                   dispatch({
